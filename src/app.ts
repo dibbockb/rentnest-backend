@@ -1,6 +1,9 @@
 import express, { Application, NextFunction, Request, Response } from "express";
 import cors from "cors"
 import envConfig from "./config/envConfig";
+import { globalErrorHandler } from "./utils/globalErrorHandler";
+import { notFoundHandler } from "./middlewares/notFoundHandler";
+import { authRoutes } from "./modules/auth/auth.route";
 
 const app: Application = express()
 
@@ -11,4 +14,8 @@ app.get(`/`, (req: Request, res: Response) => {
     res.send(`Server is Running...`)
 })
 
+app.use(`/api/auth`, authRoutes)
+
+app.use(globalErrorHandler)
+app.use(notFoundHandler)
 export default app;
