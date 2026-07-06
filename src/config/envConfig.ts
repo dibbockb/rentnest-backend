@@ -8,4 +8,5 @@ dotenv.config({
 export default {
     app_url: process.env.APP_URL,
     port: process.env.PORT || 5001,
+    db_url: process.env.DATABASE_URL
 }

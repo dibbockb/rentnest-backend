@@ -1,0 +1,5 @@
+model User {
+    id String @unique @default(uuid())
+    name String @db.VarChar(255) 
+    
+}
