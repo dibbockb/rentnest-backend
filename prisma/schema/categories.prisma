@@ -1,0 +1,8 @@
+model Categories {
+    id   String @id @unique @default(uuid())
+    name String @unique
+
+    properties Properties[]
+
+    @@map("categories")
+}

@@ -1,0 +1,28 @@
+enum UserRoles {
+    TENANT
+    LANDLORD
+    ADMIN
+}
+
+enum RentalRequestStatus {
+    PENDING
+    APPROVED
+    REJECTED
+    ACTIVE
+    COMPLETED
+}
+
+enum PaymentStatus {
+    PENDING
+    COMPLETED
+    FAILED
+}
+
+// enum CategoriesList {
+//     House
+//     Apartment
+//     Studio
+//     Duplex
+//     Tinyhouse
+//     Penthouse
+// }
