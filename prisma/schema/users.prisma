@@ -1,12 +1,13 @@
 model User {
-    id         String    @id @unique @default(uuid())
-    name       String    @db.VarChar(255)
-    email      String    @unique @db.VarChar(255)
-    password   String
-    role       UserRoles @default(TENANT)
-    is_banned  Boolean   @default(false)
-    created_at DateTime  @default(now())
-    updated_at DateTime  @updatedAt
+    id           String    @id @unique @default(uuid())
+    name         String    @db.VarChar(255)
+    email        String    @unique @db.VarChar(255)
+    password     String
+    role         UserRoles @default(TENANT)
+    profilePhoto String?
+    is_banned    Boolean   @default(false)
+    created_at   DateTime  @default(now())
+    updated_at   DateTime  @updatedAt
 
     properties      Properties[]
     rental_requests Rental_Requests[]

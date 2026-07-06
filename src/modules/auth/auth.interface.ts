@@ -7,3 +7,8 @@ export interface IRegisterUser {
     role?: UserRoles,
     profilePhoto?: string
 }
+
+export interface ILoginUser {
+    email: string,
+    password: string
+}

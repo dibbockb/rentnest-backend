@@ -1,21 +1,21 @@
 enum UserRoles {
-    TENANT
-    LANDLORD
-    ADMIN
+  TENANT
+  LANDLORD
+  ADMIN
 }
 
 enum RentalRequestStatus {
-    PENDING
-    APPROVED
-    REJECTED
-    ACTIVE
-    COMPLETED
+  PENDING
+  APPROVED
+  REJECTED
+  ACTIVE
+  COMPLETED
 }
 
 enum PaymentStatus {
-    PENDING
-    COMPLETED
-    FAILED
+  PENDING
+  COMPLETED
+  FAILED
 }
 
 // enum CategoriesList {

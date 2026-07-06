@@ -1,13 +1,13 @@
 model Payments {
-    id                String        @id @unique @default(uuid())
-    method            String
-    provider          String
-    rental_request_id String
-    amount            Int
-    status            PaymentStatus
-    paid_at           DateTime
+  id                String        @id @unique @default(uuid())
+  method            String
+  provider          String
+  rental_request_id String
+  amount            Int
+  status            PaymentStatus
+  paid_at           DateTime
 
-    rental_request Rental_Requests @relation(fields: [rental_request_id], references: [id], onDelete: Cascade)
+  rental_request Rental_Requests @relation(fields: [rental_request_id], references: [id], onDelete: Cascade)
 
-    @@map("payments")
+  @@map("payments")
 }

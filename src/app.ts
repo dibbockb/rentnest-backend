@@ -4,11 +4,13 @@ import envConfig from "./config/envConfig";
 import { globalErrorHandler } from "./utils/globalErrorHandler";
 import { notFoundHandler } from "./middlewares/notFoundHandler";
 import { authRoutes } from "./modules/auth/auth.route";
+import cookieParser from "cookie-parser";
 
 const app: Application = express()
 
 app.use(cors({ origin: envConfig.app_url, credentials: true }))
 app.use(express.json());
+app.use(cookieParser())
 
 app.get(`/`, (req: Request, res: Response) => {
     res.send(`Server is Running...`)
