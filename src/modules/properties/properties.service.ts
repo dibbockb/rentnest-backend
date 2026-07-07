@@ -1,6 +1,6 @@
 import { Prisma } from "../../../generated/prisma/browser";
 import { prisma } from "../../lib/prisma";
-import { INewProperty, IUpdateProperty } from "./properties.interface";
+import { INewProperty, IPropertyFilters, IUpdateProperty } from "./properties.interface";
 
 const createNewListingInDb = async (payload: INewProperty, userId: string) => {
     const { category_name, location, price } = payload;
@@ -66,8 +66,45 @@ const updateListingInDb = async (id: any, payload: IUpdateProperty, userId: stri
     return result
 }
 
+const getAllPropertiesFromDb = async (filters: IPropertyFilters) => {
+    const { location, price, category_name } = filters;
+
+    const whereConditions: Prisma.PropertiesWhereInput = {
+        is_available: true,
+        landlord: { is_banned: false }
+    }
+
+    if (location) {
+        whereConditions.location = {
+            contains: location.trim(),
+            mode: 'insensitive'
+        }
+    }
+    if (price) {
+        whereConditions.price = {
+            lte: Number(price)
+        }
+    }
+    if (category_name) {
+        whereConditions.category = {
+            name: {
+                equals: category_name.trim().toLowerCase()
+            }
+        }
+    }
+
+    const result = await prisma.properties.findMany({
+        where: whereConditions,
+        include: { category: true }
+    })
+
+    return result;
+
+}
+
 
 export const propertiesServices = {
     createNewListingInDb,
-    updateListingInDb
+    updateListingInDb,
+    getAllPropertiesFromDb
 }

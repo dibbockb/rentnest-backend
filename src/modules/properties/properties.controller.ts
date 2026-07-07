@@ -35,8 +35,29 @@ const updateListing = handleAsync(
     }
 )
 
+const getAllListings = handleAsync(
+    async (req: Request, res: Response) => {
+        const filters = req.query;
+        const result = await propertiesServices.getAllPropertiesFromDb(filters)
+        const totalCount = result.length
+
+        sendResponse(res, {
+            success: true,
+            statusCode: status.OK,
+            message: `Fetched all properties.`,
+            data: {
+                result,
+                totalCount
+            }
+        })
+
+    }
+)
+
+
 
 export const propertiesControllers = {
     createNewListing,
-    updateListing
+    updateListing,
+    getAllListings
 }

@@ -9,3 +9,9 @@ export interface IUpdateProperty {
     price?: number,
     category_name?: string
 }
+
+export interface IPropertyFilters {
+    location?: string,
+    price?: string,
+    category_name?: string
+}
