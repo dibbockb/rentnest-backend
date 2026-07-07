@@ -5,7 +5,7 @@ import { sendResponse } from "../../utils/sendResponse";
 import status from "http-status"
 
 const getAllUsers =
-    handleAsync(async (req: Request, res: Response, next: NextFunction) => {
+    handleAsync(async (req: Request, res: Response) => {
         const result = await adminServices.getAllUsersFromDb()
 
         sendResponse(res, {
@@ -28,8 +28,22 @@ const getAllProperties =
         })
     })
 
+const moderateUser =
+    handleAsync(async (req: Request, res: Response, next: NextFunction) => {
+        const id = req.params.id
+        const payload = req.body
+        const result = await adminServices.moderateUserInDb(id as string, payload)
+
+        sendResponse(res, {
+            success: true,
+            statusCode: status.OK,
+            message: `Updated user info.`,
+            data: result
+        })
+    })
 
 export const adminControllers = {
     getAllUsers,
-    getAllProperties
+    getAllProperties,
+    moderateUser
 }

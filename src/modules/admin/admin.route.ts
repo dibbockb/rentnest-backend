@@ -13,6 +13,10 @@ router.get(`/properties`,
     auth(UserRoles.ADMIN),
     adminControllers.getAllProperties)
 
+router.patch(`/users/:id`,
+    auth(UserRoles.ADMIN),
+    adminControllers.moderateUser)
+
 
 
 export const adminRoutes: Router = router;
