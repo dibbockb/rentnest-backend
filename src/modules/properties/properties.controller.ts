@@ -1,4 +1,4 @@
-import { Request, Response, response } from "express";
+import { Request, Response } from "express";
 import { handleAsync } from "../../utils/handleAsync";
 import { propertiesServices } from "./properties.service";
 import { sendResponse } from "../../utils/sendResponse";
@@ -19,7 +19,24 @@ const createNewListing = handleAsync(
     }
 )
 
+const updateListing = handleAsync(
+    async (req: Request, res: Response) => {
+        const id = req.params.id;
+        const payload = req.body
+        const userId = req.user?.id
+        const result = await propertiesServices.updateListingInDb(id, payload, userId as string)
+
+        sendResponse(res, {
+            success: true,
+            statusCode: status.OK,
+            message: `Updated.`,
+            data: result
+        })
+    }
+)
+
 
 export const propertiesControllers = {
-    createNewListing
+    createNewListing,
+    updateListing
 }

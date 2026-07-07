@@ -10,4 +10,9 @@ router.post(`/newlisting`,
     propertiesControllers.createNewListing
 )
 
+router.put(`/update/:id`,
+    auth(UserRoles.LANDLORD, UserRoles.ADMIN),
+    propertiesControllers.updateListing
+)
+
 export const propertiesRoutes: Router = router

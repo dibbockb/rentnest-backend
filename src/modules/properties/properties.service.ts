@@ -1,5 +1,6 @@
+import { Prisma } from "../../../generated/prisma/browser";
 import { prisma } from "../../lib/prisma";
-import { INewProperty } from "./properties.interface";
+import { INewProperty, IUpdateProperty } from "./properties.interface";
 
 const createNewListingInDb = async (payload: INewProperty, userId: string) => {
     const { category_name, location, price } = payload;
@@ -28,7 +29,45 @@ const createNewListingInDb = async (payload: INewProperty, userId: string) => {
     ///add input validation
 }
 
+const updateListingInDb = async (id: any, payload: IUpdateProperty, userId: string) => {
+    const propertyInDb = await prisma.properties.findUnique({
+        where: { id }
+    })
+    if (!propertyInDb) {
+        throw new Error(`No post found for id : ${id}`)
+    }
+
+    const isCreator = propertyInDb.landlord_id === userId
+    if (!isCreator) {
+        throw new Error(`Unauthorized action.`)
+    }
+
+    const { category_name, ...restPayload } = payload;
+    const updateData: Prisma.PropertiesUpdateInput = {
+        ...restPayload,
+        price: restPayload.price !== undefined ? Number(restPayload.price) : undefined
+    };
+
+    if (category_name) {
+        const cleanCategoryName = category_name.trim().toLowerCase();
+
+        updateData.category = {
+            connectOrCreate: {
+                where: { name: cleanCategoryName },
+                create: { name: cleanCategoryName }
+            }
+        };
+    }
+
+    const result = await prisma.properties.update({
+        where: { id: propertyInDb.id },
+        data: updateData
+    })
+    return result
+}
+
 
 export const propertiesServices = {
-    createNewListingInDb
+    createNewListingInDb,
+    updateListingInDb
 }
