@@ -51,7 +51,7 @@ export const auth = (...requiredRoles: UserRoles[]) => {
             }
 
             if (user.is_banned) {
-                throw new Error(`You have been baneed from RentNest. Please contact support if you think this is a mistake.`)
+                throw new Error(`You have been banned from RentNest. Please contact support if you think this is a mistake.`)
             }
 
             req.user = {
