@@ -63,8 +63,23 @@ const refreshToken =
         })
     })
 
+const getCurrentUser =
+    handleAsync(async (req: Request, res: Response, next: NextFunction) => {
+        const accessToken = req.cookies.accessToken
+        const result = await authServices.getCurrentUserFromDb(accessToken)
+
+        sendResponse(res, {
+            success: true,
+            statusCode: status.OK,
+            message: `User retrieved.`,
+            data: result
+        })
+    })
+
+
 export const authControllers = {
     registerUser,
     loginUser,
-    refreshToken
+    refreshToken,
+    getCurrentUser
 }

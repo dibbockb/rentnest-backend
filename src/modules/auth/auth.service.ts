@@ -94,10 +94,29 @@ const refreshToken = async (refreshToken: string) => {
     return { accessToken }
 }
 
+const getCurrentUserFromDb = async (accessToken: string) => {
+    if (!accessToken) {
+        throw new Error(`Unable to fetch user from cookie. Please try logging in again.`)
+    }
+
+    const verifiedToken = tokenUtils.verifyToken(accessToken, envConfig.jwt_access_secret)
+    if (!verifiedToken) {
+        throw new Error(`Unable to verify token`)
+    }
+
+    const { id } = verifiedToken.data as JwtPayload
+
+    const result = await prisma.user.findFirstOrThrow({
+        where: { id },
+        omit: { password: true }
+    })
+    return result;
+}
 
 
 export const authServices = {
     registerUserIntoDb,
     loginUserIntoDb,
-    refreshToken
+    refreshToken,
+    getCurrentUserFromDb
 }
