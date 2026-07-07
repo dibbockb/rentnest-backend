@@ -13,5 +13,5 @@ export interface IUpdateProperty {
 export interface IPropertyFilters {
     location?: string,
     price?: string,
-    category_name?: string
+    category?: string
 }

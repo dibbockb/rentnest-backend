@@ -67,7 +67,7 @@ const updateListingInDb = async (id: any, payload: IUpdateProperty, userId: stri
 }
 
 const getAllPropertiesFromDb = async (filters: IPropertyFilters) => {
-    const { location, price, category_name } = filters;
+    const { location, price, category } = filters;
 
     const whereConditions: Prisma.PropertiesWhereInput = {
         is_available: true,
@@ -85,26 +85,36 @@ const getAllPropertiesFromDb = async (filters: IPropertyFilters) => {
             lte: Number(price)
         }
     }
-    if (category_name) {
+    if (category) {
         whereConditions.category = {
             name: {
-                equals: category_name.trim().toLowerCase()
+                equals: category.trim().toLowerCase()
             }
         }
     }
 
     const result = await prisma.properties.findMany({
         where: whereConditions,
-        include: { category: true }
+        include: { category: true },
+        omit: { category_id: true }
     })
 
     return result;
+}
 
+const getPropertyDetailsFromDb = async (id: string) => {
+    const result = await prisma.properties.findUnique({
+        where: { id },
+        include: { category: true },
+        omit: { category_id: true }
+    })
+    return result
 }
 
 
 export const propertiesServices = {
     createNewListingInDb,
     updateListingInDb,
-    getAllPropertiesFromDb
+    getAllPropertiesFromDb,
+    getPropertyDetailsFromDb
 }

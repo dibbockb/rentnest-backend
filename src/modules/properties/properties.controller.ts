@@ -50,14 +50,29 @@ const getAllListings = handleAsync(
                 totalCount
             }
         })
-
     }
 )
 
+const getPropertyDetails = handleAsync(
+    async (req: Request, res: Response) => {
+        const id = req.params.id;
+        const result = await propertiesServices.getPropertyDetailsFromDb(id as string)
+
+        sendResponse(res, {
+            success: true,
+            statusCode: status.OK,
+            message: `Fetched property with id ${id}.`,
+            data: {
+                result
+            }
+        })
+    }
+)
 
 
 export const propertiesControllers = {
     createNewListing,
     updateListing,
-    getAllListings
+    getAllListings,
+    getPropertyDetails
 }

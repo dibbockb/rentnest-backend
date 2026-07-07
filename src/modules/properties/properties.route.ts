@@ -6,6 +6,7 @@ import { propertiesControllers } from "./properties.controller";
 const router = Router()
 
 router.get(`/`, propertiesControllers.getAllListings)
+router.get(`/:id`, propertiesControllers.getPropertyDetails)
 
 router.post(`/newlisting`,
     auth(UserRoles.ADMIN, UserRoles.LANDLORD),
