@@ -5,6 +5,7 @@ import { globalErrorHandler } from "./utils/globalErrorHandler";
 import { notFoundHandler } from "./middlewares/notFoundHandler";
 import { authRoutes } from "./modules/auth/auth.route";
 import cookieParser from "cookie-parser";
+import { propertiesRoutes } from "./modules/properties/properties.route";
 
 const app: Application = express()
 
@@ -17,6 +18,7 @@ app.get(`/`, (req: Request, res: Response) => {
 })
 
 app.use(`/api/auth`, authRoutes)
+app.use(`/api/properties`, propertiesRoutes)
 
 app.use(globalErrorHandler)
 app.use(notFoundHandler)

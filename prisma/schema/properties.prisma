@@ -9,7 +9,7 @@ model Properties {
   updated_at   DateTime @updatedAt
 
   landlord User       @relation(fields: [landlord_id], references: [id], onDelete: Cascade)
-  category Categories @relation(fields: [category_id], references: [id], onDelete: Restrict) ///toUnderstand
+  category Categories @relation(fields: [category_id], references: [id], onDelete: Cascade)
 
   rental_requests Rental_Requests[] ///toUnderstand
   reviews         Reviews[]
