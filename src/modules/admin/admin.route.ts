@@ -9,4 +9,10 @@ router.get(`/users`,
     auth(UserRoles.ADMIN),
     adminControllers.getAllUsers)
 
+router.get(`/properties`,
+    auth(UserRoles.ADMIN),
+    adminControllers.getAllProperties)
+
+
+
 export const adminRoutes: Router = router;

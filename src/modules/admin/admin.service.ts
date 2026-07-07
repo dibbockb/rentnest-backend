@@ -7,7 +7,15 @@ const getAllUsersFromDb = async () => {
     return result;
 }
 
+const getAllPropertiesFromDb = async () => {
+    const result = await prisma.properties.findMany({
+        include: { }
+    })
+    return result;
+}
+
 
 export const adminServices = {
-    getAllUsersFromDb
+    getAllUsersFromDb,
+    getAllPropertiesFromDb
 }
