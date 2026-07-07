@@ -111,10 +111,20 @@ const getPropertyDetailsFromDb = async (id: string) => {
     return result
 }
 
+const getAllCategoriesFromDb = async () => {
+    const result = await prisma.categories.findMany({
+        orderBy: {
+            name: 'asc'
+        }
+    })
+
+    return result;
+}
 
 export const propertiesServices = {
     createNewListingInDb,
     updateListingInDb,
     getAllPropertiesFromDb,
-    getPropertyDetailsFromDb
+    getPropertyDetailsFromDb,
+    getAllCategoriesFromDb
 }

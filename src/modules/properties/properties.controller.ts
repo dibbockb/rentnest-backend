@@ -69,10 +69,24 @@ const getPropertyDetails = handleAsync(
     }
 )
 
+const getAllCategories = handleAsync(
+    async (req: Request, res: Response) => {
+        const result = await propertiesServices.getAllCategoriesFromDb()
+
+        sendResponse(res, {
+            success: true,
+            statusCode: status.OK,
+            message: `Fetched all categories`,
+            data: result
+        }
+        )
+    }
+)
 
 export const propertiesControllers = {
     createNewListing,
     updateListing,
     getAllListings,
-    getPropertyDetails
+    getPropertyDetails,
+    getAllCategories
 }
