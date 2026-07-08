@@ -3,6 +3,37 @@ import { handleAsync } from "../../utils/handleAsync"
 import { rentalServices } from "./rental.service";
 import { sendResponse } from "../../utils/sendResponse";
 import status from "http-status"
+import { UserRoles } from "../../../generated/prisma/enums";
+
+const getMyRequests = handleAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const userId = req.user?.id
+
+        const result = await rentalServices.getMyRequestsFromDb(userId as string)
+        sendResponse(res, {
+            success: true,
+            statusCode: status.OK,
+            message: `Fetched All Requests for ${req.user?.id}`,
+            data: { result }
+        })
+    }
+)
+
+const getRequestDetails = handleAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const userId = req.user?.id;
+        const requestId = req.params.id;
+
+
+        const result = await rentalServices.getRequestDetailsFromDB(userId as string, requestId as string, req.user?.role as UserRoles)
+        sendResponse(res, {
+            success: true,
+            statusCode: status.OK,
+            message: `Fetched Request details for ${requestId}`,
+            data: { result }
+        })
+    }
+)
 
 const submitRentalRequest = handleAsync(
     async (req: Request, res: Response, next: NextFunction) => {
@@ -21,4 +52,6 @@ const submitRentalRequest = handleAsync(
 
 export const rentalControllers = {
     submitRentalRequest,
+    getMyRequests,
+    getRequestDetails
 }
