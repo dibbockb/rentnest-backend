@@ -8,6 +8,7 @@ import cookieParser from "cookie-parser";
 import { propertiesRoutes } from "./modules/properties/properties.route";
 import { adminRoutes } from "./modules/admin/admin.route";
 import { rentalRouters } from "./modules/rental/rental.routes";
+import { landlordRoutes } from "./modules/landlord/landlord.route";
 
 const app: Application = express()
 
@@ -22,6 +23,7 @@ app.get(`/`, (req: Request, res: Response) => {
 app.use(`/api/admin`, adminRoutes)
 app.use(`/api/auth`, authRoutes)
 app.use(`/api/properties`, propertiesRoutes)
+app.use(`/api/landlord`, landlordRoutes)
 app.use(`/api/rental`, rentalRouters)
 
 app.use(globalErrorHandler)
