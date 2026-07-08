@@ -13,6 +13,10 @@ router.get(`/properties`,
     auth(UserRoles.ADMIN),
     adminControllers.getAllProperties)
 
+router.get(`/rentals`,
+    auth(UserRoles.ADMIN),
+    adminControllers.getAllRentalRequests)
+
 router.patch(`/users/:id`,
     auth(UserRoles.ADMIN),
     adminControllers.moderateUser)

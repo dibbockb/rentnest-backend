@@ -17,6 +17,17 @@ const getAllPropertiesFromDb = async () => {
     return result;
 }
 
+const getAllRentalRequestsFromDb = async () => {
+    const result = await prisma.rental_Requests.findMany({
+        include:
+        {
+            property: true,
+            tenant: { omit: { password: true } }
+        }
+    })
+    return result;
+}
+
 const moderateUserInDb = async (id: string, payload: IModerateUser) => {
     const userInDb = await prisma.user.findUnique({
         where: { id }
@@ -47,5 +58,6 @@ const moderateUserInDb = async (id: string, payload: IModerateUser) => {
 export const adminServices = {
     getAllUsersFromDb,
     getAllPropertiesFromDb,
+    getAllRentalRequestsFromDb,
     moderateUserInDb
 }

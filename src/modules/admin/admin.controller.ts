@@ -28,6 +28,19 @@ const getAllProperties =
         })
     })
 
+const getAllRentalRequests =
+    handleAsync(async (req: Request, res: Response, next: NextFunction) => {
+        const result = await adminServices.getAllRentalRequestsFromDb()
+
+        sendResponse(res, {
+            success: true,
+            statusCode: status.OK,
+            message: `Fetched all rental requests.`,
+            data: { result }
+        })
+    })
+
+
 const moderateUser =
     handleAsync(async (req: Request, res: Response, next: NextFunction) => {
         const id = req.params.id
@@ -45,5 +58,6 @@ const moderateUser =
 export const adminControllers = {
     getAllUsers,
     getAllProperties,
+    getAllRentalRequests,
     moderateUser
 }
