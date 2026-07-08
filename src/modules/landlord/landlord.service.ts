@@ -1,6 +1,46 @@
 import { JwtPayload } from "jsonwebtoken";
 import { prisma } from "../../lib/prisma";
-import { UserRoles } from "../../../generated/prisma/enums";
+import { RentalRequestStatus, UserRoles } from "../../../generated/prisma/enums";
+
+const getAllRequestsFromDb = async (userId: string) => {
+    const result = await prisma.rental_Requests.findMany({
+        where: {
+            property: {
+                landlord_id: userId
+            }
+        },
+        include: {
+            property: true,
+            tenant: { omit: { password: true } },
+        },
+        orderBy: {
+            created_at: "desc"
+        }
+    })
+
+    return result;
+}
+
+const manageRequestInDb = async (requestId: string, userId: string, statusAction: RentalRequestStatus) => {
+    const rentalRequest = await prisma.rental_Requests.findUnique({
+        where: { id: requestId },
+        include: { property: true }
+    })
+
+    if (!rentalRequest) {
+        throw new Error(`Rental request not found.`)
+    }
+
+    if (rentalRequest.property.landlord_id !== userId) {
+        throw new Error(`Unauthorized.`)
+    }
+
+    const result = await prisma.rental_Requests.update({
+        where: { id: rentalRequest.id },
+        data: { status: statusAction }
+    })
+    return result;
+}
 
 const deleteListingFromDb = async (id: string, userId: string, userRole: string) => {
     const propertyInDb = await prisma.properties.findUnique({
@@ -25,5 +65,7 @@ const deleteListingFromDb = async (id: string, userId: string, userRole: string)
 }
 
 export const landlordServices = {
-    deleteListingFromDb
+    getAllRequestsFromDb,
+    deleteListingFromDb,
+    manageRequestInDb
 }

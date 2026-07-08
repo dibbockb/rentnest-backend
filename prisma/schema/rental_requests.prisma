@@ -3,7 +3,6 @@ model Rental_Requests {
   property_id  String
   requested_by String
   status       RentalRequestStatus @default(PENDING)
-  is_muted     Boolean             @default(false)
   created_at   DateTime            @default(now())
   updated_at   DateTime            @updatedAt
 

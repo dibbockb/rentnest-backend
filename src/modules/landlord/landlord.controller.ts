@@ -3,8 +3,41 @@ import { handleAsync } from "../../utils/handleAsync";
 import { landlordServices } from "./landlord.service";
 import { sendResponse } from "../../utils/sendResponse";
 import status from "http-status"
+import { CLIENT_RENEG_LIMIT } from "node:tls";
+import { RentalRequestStatus } from "../../../generated/prisma/enums";
 
-export const deleteListing = handleAsync(
+const getAllRequests = handleAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const userId = req.user?.id;
+        const result = await landlordServices.getAllRequestsFromDb(userId as string)
+        const totalCount = result.length
+
+        sendResponse(res, {
+            success: true,
+            statusCode: status.OK,
+            message: `Fetched all properties and rental requests`,
+            data: { result, totalCount }
+        })
+    })
+
+const manageRequest = handleAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const requestId = req.params.requestId
+        const userId = req.user?.id
+        const isAccepted = req.query?.accept == 'true';
+        const statusAction = isAccepted ? RentalRequestStatus.APPROVED : RentalRequestStatus.REJECTED
+
+        const result = await landlordServices.manageRequestInDb(requestId as string, userId as string, statusAction)
+        sendResponse(res, {
+            success: true,
+            statusCode: status.OK,
+            message: `Updated status for this request. `,
+            data: result
+        })
+    }
+)
+
+const deleteListing = handleAsync(
     async (req: Request, res: Response, next: NextFunction) => {
         const id = req.params.id
         const userId = req.user?.id
@@ -21,6 +54,8 @@ export const deleteListing = handleAsync(
     }
 )
 
-export const landlordController = {
-    deleteListing
+export const landlordControllers = {
+    getAllRequests,
+    deleteListing,
+    manageRequest
 }

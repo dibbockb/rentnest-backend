@@ -1,12 +1,23 @@
 import { Router } from "express";
-import { landlordController } from "./landlord.controller";
+import { landlordControllers } from "./landlord.controller";
 import { auth } from "../../middlewares/auth";
 import { UserRoles } from "../../../generated/prisma/enums";
 
 const router = Router()
 
+router.get(`/requests`,
+    auth(UserRoles.LANDLORD),
+    landlordControllers.getAllRequests
+
+)
+
+router.patch(`/properties/:requestId`,
+    auth(UserRoles.LANDLORD),
+    landlordControllers.manageRequest
+)
+
 router.delete(`/properties/:id`,
     auth(UserRoles.ADMIN, UserRoles.LANDLORD),
-    landlordController.deleteListing)
+    landlordControllers.deleteListing)
 
-export const landlordRoutes: Router = router; 
+export const landlordRoutes: Router = router;
