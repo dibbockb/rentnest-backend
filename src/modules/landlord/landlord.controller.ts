@@ -6,6 +6,21 @@ import status from "http-status"
 import { CLIENT_RENEG_LIMIT } from "node:tls";
 import { RentalRequestStatus } from "../../../generated/prisma/enums";
 
+const getAllProperties = handleAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const userId = req.user?.id
+
+        const result = await landlordServices.getAllPropertiesFromDb(userId as string)
+        const totalCount = result.length
+        sendResponse(res, {
+            success: true,
+            statusCode: status.OK,
+            message: `Fetched all properties for landlord : ${userId}`,
+            data: { result, totalCount }
+        })
+    }
+)
+
 const getAllRequests = handleAsync(
     async (req: Request, res: Response, next: NextFunction) => {
         const userId = req.user?.id;
@@ -55,6 +70,7 @@ const deleteListing = handleAsync(
 )
 
 export const landlordControllers = {
+    getAllProperties,
     getAllRequests,
     deleteListing,
     manageRequest

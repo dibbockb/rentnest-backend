@@ -5,6 +5,12 @@ import { UserRoles } from "../../../generated/prisma/enums";
 
 const router = Router()
 
+router.get(`/properties`,
+    auth(UserRoles.LANDLORD),
+    landlordControllers.getAllProperties
+
+)
+
 router.get(`/requests`,
     auth(UserRoles.LANDLORD),
     landlordControllers.getAllRequests

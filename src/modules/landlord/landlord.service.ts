@@ -2,6 +2,13 @@ import { JwtPayload } from "jsonwebtoken";
 import { prisma } from "../../lib/prisma";
 import { RentalRequestStatus, UserRoles } from "../../../generated/prisma/enums";
 
+const getAllPropertiesFromDb = async (userId: string) => {
+    const result = await prisma.properties.findMany({
+        where: { landlord_id: userId }
+    })
+    return result;
+}
+
 const getAllRequestsFromDb = async (userId: string) => {
     const result = await prisma.rental_Requests.findMany({
         where: {
@@ -65,6 +72,7 @@ const deleteListingFromDb = async (id: string, userId: string, userRole: string)
 }
 
 export const landlordServices = {
+    getAllPropertiesFromDb,
     getAllRequestsFromDb,
     deleteListingFromDb,
     manageRequestInDb
