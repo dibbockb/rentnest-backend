@@ -7,8 +7,9 @@ import { authRoutes } from "./modules/auth/auth.route";
 import cookieParser from "cookie-parser";
 import { propertiesRoutes } from "./modules/properties/properties.route";
 import { adminRoutes } from "./modules/admin/admin.route";
-import { rentalRouters } from "./modules/rental/rental.routes";
 import { landlordRoutes } from "./modules/landlord/landlord.route";
+import { rentalRoutes } from "./modules/rental/rental.routes";
+import { paymentRoutes } from "./modules/payment/payment.route";
 
 const app: Application = express()
 
@@ -24,7 +25,8 @@ app.use(`/api/admin`, adminRoutes)
 app.use(`/api/auth`, authRoutes)
 app.use(`/api/properties`, propertiesRoutes)
 app.use(`/api/landlord`, landlordRoutes)
-app.use(`/api/rental`, rentalRouters)
+app.use(`/api/rental`, rentalRoutes)
+app.use(`/api/payments`, paymentRoutes)
 
 app.use(globalErrorHandler)
 app.use(notFoundHandler)

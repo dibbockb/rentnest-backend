@@ -17,4 +17,4 @@ router.post(`/:id`,
     auth(UserRoles.TENANT),
     rentalControllers.submitRentalRequest)
 
-export const rentalRouters: Router = router;
+export const rentalRoutes: Router = router;

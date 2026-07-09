@@ -2,10 +2,11 @@ model Payments {
   id                String        @id @unique @default(uuid())
   method            String
   provider          String
-  rental_request_id String
+  rental_request_id String        @unique
+  transaction_id    String        @unique
   amount            Int
   status            PaymentStatus
-  paid_at           DateTime
+  paid_at           DateTime      @default(now())
 
   rental_request Rental_Requests @relation(fields: [rental_request_id], references: [id], onDelete: Cascade)
 
