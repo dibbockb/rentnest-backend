@@ -9,4 +9,6 @@ router.post(`/create/:rentalRequestId`,
     auth(UserRoles.TENANT),
     paymentControllers.createCheckoutSession)
 
+router.post(`/webhook`, paymentControllers.handleWebhook)
+
 export const paymentRoutes: Router = router

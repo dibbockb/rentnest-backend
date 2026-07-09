@@ -1,4 +1,4 @@
-import express, { Application, NextFunction, Request, Response } from "express";
+import express, { Application, Request, Response } from "express";
 import cors from "cors"
 import envConfig from "./config/envConfig";
 import { globalErrorHandler } from "./utils/globalErrorHandler";
@@ -13,6 +13,7 @@ import { paymentRoutes } from "./modules/payment/payment.route";
 
 const app: Application = express()
 
+app.use(`/api/payments/webhook`, express.raw({ type: 'application/json' }))
 app.use(cors({ origin: envConfig.app_url, credentials: true }))
 app.use(express.json());
 app.use(cookieParser())

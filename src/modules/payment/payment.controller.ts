@@ -21,6 +21,24 @@ const createCheckoutSession = handleAsync(
     }
 )
 
+const handleWebhook = handleAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const event = req.body as Buffer;
+        const signature = req.headers['stripe-signature']
+
+        try {
+            await paymentServices.handleWebhook(event, signature as string)
+            res.status(status.OK).json({ recived: true })
+        } catch (error: any) {
+            console.error(`Webhook processing failed: ${error.message}`);
+            res.status(status.BAD_REQUEST).send(`Webhook error: ${error.message}`)
+        }
+    }
+)
+
+
+
 export const paymentControllers = {
-    createCheckoutSession
+    createCheckoutSession,
+    handleWebhook
 }

@@ -5,7 +5,8 @@
   "main": "server.ts",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "stripe:webhook": "stripe listen --forward-to localhost:5001/api/payments/webhook"
   },
   "keywords": [],
   "author": "",
