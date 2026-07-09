@@ -17,4 +17,8 @@ router.post(`/:id`,
     auth(UserRoles.TENANT),
     rentalControllers.submitRentalRequest)
 
+router.post(`/review/:propertyId`,
+    auth(UserRoles.TENANT),
+    rentalControllers.submitReview)
+
 export const rentalRoutes: Router = router;

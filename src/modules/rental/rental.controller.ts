@@ -50,8 +50,25 @@ const submitRentalRequest = handleAsync(
     }
 )
 
+const submitReview = handleAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const payload = req.body
+        const propertyId = req.params.propertyId
+        const userId = req.user?.id
+
+        const result = await rentalServices.submitReviewInDb(payload, propertyId as string, userId as string)
+        sendResponse(res, {
+            success: true,
+            statusCode: status.OK,
+            message: `Review submitted.`,
+            data: { result }
+        })
+    }
+)
+
 export const rentalControllers = {
     submitRentalRequest,
     getMyRequests,
-    getRequestDetails
+    getRequestDetails,
+    submitReview
 }

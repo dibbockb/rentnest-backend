@@ -1,5 +1,6 @@
-import { UserRoles } from "../../../generated/prisma/enums";
+import { RentalRequestStatus, UserRoles } from "../../../generated/prisma/enums";
 import { prisma } from "../../lib/prisma"
+import { IReview } from "./rental.interface";
 
 const getMyRequestsFromDb = async (userId: string) => {
     const result = await prisma.rental_Requests.findMany({
@@ -49,8 +50,49 @@ const submitRentalRequestInDb = async (propertyId: string, requestedBy: string) 
     return result;
 }
 
+const submitReviewInDb = async (payload: IReview, propertyId: string, userId: string) => {
+    const propertyInDb = await prisma.properties.findUnique({
+        where: { id: propertyId },
+    })
+    if (!propertyInDb) {
+        throw new Error(`No such property found.`)
+    }
+
+    const isValidTenant = await prisma.rental_Requests.findFirst({
+        where: {
+            property_id: propertyId,
+            requested_by: userId,
+            status: RentalRequestStatus.COMPLETED
+        }
+    })
+    if (!isValidTenant) {
+        throw new Error(`Access denied.`)
+    }
+
+    const existingReview = await prisma.reviews.findFirst({
+        where: {
+            property_id: propertyId,
+            tenant_id: userId
+        }
+    });
+    if (existingReview) {
+        throw new Error('You have already submitted a review for this property.');
+    }
+
+    const result = await prisma.reviews.create({
+        data: {
+            rating: payload.stars,
+            content: payload.content,
+            property_id: propertyId,
+            tenant_id: userId
+        }
+    });
+    return result;
+}
+
 export const rentalServices = {
     submitRentalRequestInDb,
     getMyRequestsFromDb,
-    getRequestDetailsFromDB
+    getRequestDetailsFromDB,
+    submitReviewInDb
 }
