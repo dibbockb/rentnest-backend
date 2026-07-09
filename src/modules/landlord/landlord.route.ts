@@ -22,7 +22,7 @@ router.patch(`/properties/:requestId`,
     landlordControllers.manageRequest
 )
 
-router.delete(`/properties/:id`,
+router.delete(`/:id`,
     auth(UserRoles.ADMIN, UserRoles.LANDLORD),
     landlordControllers.deleteListing)
 

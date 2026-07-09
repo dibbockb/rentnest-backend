@@ -33,7 +33,7 @@ const createCheckoutSession = async (rentalRequestId: string, userId: string) =>
 
         line_items: [{
             price_data: {
-                currency: "usd",
+                currency: "bdt",
                 product_data: {
                     name: rentalRequest.property.location
                 },

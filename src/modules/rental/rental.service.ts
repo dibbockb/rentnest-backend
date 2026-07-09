@@ -3,14 +3,15 @@ import { prisma } from "../../lib/prisma"
 
 const getMyRequestsFromDb = async (userId: string) => {
     const result = await prisma.rental_Requests.findMany({
-        where: { requested_by: userId }
+        where: { requested_by: userId },
+        include: { property: true },
     })
 
     return result;
 }
 
 const getRequestDetailsFromDB = async (userId: string, requestId: string, userRole: UserRoles) => {
-    const result = await prisma.rental_Requests.findUniqueOrThrow({
+    const result = await prisma.rental_Requests.findUnique({
         where: { id: requestId, },
         include: {
             property: true,
