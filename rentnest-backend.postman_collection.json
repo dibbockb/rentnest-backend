@@ -1,0 +1,627 @@
+{
+  "info": {
+    "_postman_id": "54e46ac8-e25d-46a9-be59-d26cba4541b1",
+    "name": "rentnest-backend",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "54867039",
+    "_collection_link": "https://go.postman.co/collection/54867039-54e46ac8-e25d-46a9-be59-d26cba4541b1?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "auth",
+      "item": [
+        {
+          "name": "register",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Tenant User\",\r\n    \"email\": \"3@rentnest.com\",\r\n    \"password\": \"123\",\r\n    \"role\":\"TENANT\"\r\n}\r\n\r\n// TENANT as role by default, Valid roles: ADMIN | LANDLORD | TENANT",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://rentnest.dibbockb.com/api/auth/register",
+              "protocol": "https",
+              "host": [
+                "rentnest",
+                "dibbockb",
+                "com"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"1@rentnest.com\",\r\n    \"password\": \"123\"\r\n}\r\n\r\n// 1@rentnest.com > ADMIN\r\n// 2@rentnest.com > LANDLORD\r\n// 3@rentnest.com > TENANT",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://rentnest.dibbockb.com/api/auth/login",
+              "protocol": "https",
+              "host": [
+                "rentnest",
+                "dibbockb",
+                "com"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get logged in user",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"1@1.com\",\r\n    \"password\": \"1\"\r\n}"
+            },
+            "url": {
+              "raw": "https://rentnest.dibbockb.com/api/auth/me",
+              "protocol": "https",
+              "host": [
+                "rentnest",
+                "dibbockb",
+                "com"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "properties",
+      "item": [
+        {
+          "name": "create new listing",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"location\": \"Sylhet\",\r\n    \"price\": \"10000\",\r\n    \"category_name\": \"Apartment\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://rentnest.dibbockb.com/api/properties/newlisting",
+              "protocol": "https",
+              "host": [
+                "rentnest",
+                "dibbockb",
+                "com"
+              ],
+              "path": [
+                "api",
+                "properties",
+                "newlisting"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update listing",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"location\": \"1111111 by admin\",\r\n    \"price\": \"1\",\r\n    \"category_name\": \"fdf\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://rentnest.dibbockb.com/api/properties/update/3b318c5e-6347-4d67-80c2-8a3ae731504a",
+              "protocol": "https",
+              "host": [
+                "rentnest",
+                "dibbockb",
+                "com"
+              ],
+              "path": [
+                "api",
+                "properties",
+                "update",
+                "3b318c5e-6347-4d67-80c2-8a3ae731504a"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all properties",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://rentnest.dibbockb.com/api/properties",
+              "protocol": "https",
+              "host": [
+                "rentnest",
+                "dibbockb",
+                "com"
+              ],
+              "path": [
+                "api",
+                "properties"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get :id property",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://rentnest.dibbockb.com/api/properties/63fc0975-540c-4200-a67d-d15eeeeeea8a",
+              "protocol": "https",
+              "host": [
+                "rentnest",
+                "dibbockb",
+                "com"
+              ],
+              "path": [
+                "api",
+                "properties",
+                "63fc0975-540c-4200-a67d-d15eeeeeea8a"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://rentnest.dibbockb.com/api/properties/categories",
+              "protocol": "https",
+              "host": [
+                "rentnest",
+                "dibbockb",
+                "com"
+              ],
+              "path": [
+                "api",
+                "properties",
+                "categories"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "admin",
+      "item": [
+        {
+          "name": "get all users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://rentnest.dibbockb.com/api/admin/users",
+              "protocol": "https",
+              "host": [
+                "rentnest",
+                "dibbockb",
+                "com"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all properties",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://rentnest.dibbockb.com/api/admin/properties",
+              "protocol": "https",
+              "host": [
+                "rentnest",
+                "dibbockb",
+                "com"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "properties"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "moderate user",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Updated name\",\r\n    \"email\": \"10@1.com\",\r\n    \"role\": \"TENANT\",\r\n    \"is_banned\": true\r\n}\r\n\r\n// optional: name, email, role, is_banned",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://rentnest.dibbockb.com/api/admin/users/95796427-a779-4410-9bea-794f892ae859",
+              "protocol": "https",
+              "host": [
+                "rentnest",
+                "dibbockb",
+                "com"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "users",
+                "95796427-a779-4410-9bea-794f892ae859"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all rental requests",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"1@1.com\",\r\n    \"password\": \"1\"\r\n}"
+            },
+            "url": {
+              "raw": "https://rentnest.dibbockb.com/api/admin/rentals",
+              "protocol": "https",
+              "host": [
+                "rentnest",
+                "dibbockb",
+                "com"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "rentals"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "rental",
+      "item": [
+        {
+          "name": "submit request",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"1@1.com\",\r\n    \"password\": \"1\"\r\n}"
+            },
+            "url": {
+              "raw": "https://rentnest.dibbockb.com/api/rental/63fc0975-540c-4200-a67d-d15eeeeeea8a",
+              "protocol": "https",
+              "host": [
+                "rentnest",
+                "dibbockb",
+                "com"
+              ],
+              "path": [
+                "api",
+                "rental",
+                "63fc0975-540c-4200-a67d-d15eeeeeea8a"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "submit review",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"stars\": 5,\r\n    \"content\": \"Great apartment with nice view of the sunset\"\r\n}\r\n\r\n//submit propertyid as parameter. ",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://rentnest.dibbockb.com/api/rental/review/879f1d4c-32e2-440c-b7af-6c49767a9eb4",
+              "protocol": "https",
+              "host": [
+                "rentnest",
+                "dibbockb",
+                "com"
+              ],
+              "path": [
+                "api",
+                "rental",
+                "review",
+                "879f1d4c-32e2-440c-b7af-6c49767a9eb4"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all requests",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"1@1.com\",\r\n    \"password\": \"1\"\r\n}"
+            },
+            "url": {
+              "raw": "https://rentnest.dibbockb.com/api/rental/my-requests",
+              "protocol": "https",
+              "host": [
+                "rentnest",
+                "dibbockb",
+                "com"
+              ],
+              "path": [
+                "api",
+                "rental",
+                "my-requests"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get request details",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"1@1.com\",\r\n    \"password\": \"1\"\r\n}"
+            },
+            "url": {
+              "raw": "https://rentnest.dibbockb.com/api/rental/196dbb4a-d8b5-48f5-b725-54bcb54f8300",
+              "protocol": "https",
+              "host": [
+                "rentnest",
+                "dibbockb",
+                "com"
+              ],
+              "path": [
+                "api",
+                "rental",
+                "196dbb4a-d8b5-48f5-b725-54bcb54f8300"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "landlord",
+      "item": [
+        {
+          "name": "delete property",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"1@1.com\",\r\n    \"password\": \"1\"\r\n}"
+            },
+            "url": {
+              "raw": "https://rentnest.dibbockb.com/api/landlord/6c1682f7-1ee2-472f-821b-10f1ab00a06b",
+              "protocol": "https",
+              "host": [
+                "rentnest",
+                "dibbockb",
+                "com"
+              ],
+              "path": [
+                "api",
+                "landlord",
+                "6c1682f7-1ee2-472f-821b-10f1ab00a06b"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "approve / reject request",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "//requires query : accept=true > accepts request, else=reject"
+            },
+            "url": {
+              "raw": "https://rentnest.dibbockb.com/api/landlord/properties/5da7373a-783d-4ade-873d-2568b1f59bc8?accept=true",
+              "protocol": "https",
+              "host": [
+                "rentnest",
+                "dibbockb",
+                "com"
+              ],
+              "path": [
+                "api",
+                "landlord",
+                "properties",
+                "5da7373a-783d-4ade-873d-2568b1f59bc8"
+              ],
+              "query": [
+                {
+                  "key": "accept",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all rental requests",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://rentnest.dibbockb.com/api/landlord/requests",
+              "protocol": "https",
+              "host": [
+                "rentnest",
+                "dibbockb",
+                "com"
+              ],
+              "path": [
+                "api",
+                "landlord",
+                "requests"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all properties",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://rentnest.dibbockb.com/api/landlord/properties",
+              "protocol": "https",
+              "host": [
+                "rentnest",
+                "dibbockb",
+                "com"
+              ],
+              "path": [
+                "api",
+                "landlord",
+                "properties"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "payment",
+      "item": [
+        {
+          "name": "create new session",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "https://rentnest.dibbockb.com/api/payments/create/5da7373a-783d-4ade-873d-2568b1f59bc8",
+              "protocol": "https",
+              "host": [
+                "rentnest",
+                "dibbockb",
+                "com"
+              ],
+              "path": [
+                "api",
+                "payments",
+                "create",
+                "5da7373a-783d-4ade-873d-2568b1f59bc8"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "!root",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://rentnest.dibbockb.com",
+          "protocol": "https",
+          "host": [
+            "rentnest",
+            "dibbockb",
+            "com"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
