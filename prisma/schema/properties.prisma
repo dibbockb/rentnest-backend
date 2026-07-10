@@ -11,7 +11,7 @@ model Properties {
   landlord User       @relation(fields: [landlord_id], references: [id], onDelete: Cascade)
   category Categories @relation(fields: [category_id], references: [id], onDelete: Cascade)
 
-  rental_requests Rental_Requests[] ///toUnderstand
+  rental_requests Rental_Requests[]
   reviews         Reviews[]
 
   @@map("properties")

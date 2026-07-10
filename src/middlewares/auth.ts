@@ -7,8 +7,6 @@ import { JwtPayload } from "jsonwebtoken"
 import { prisma } from "../lib/prisma"
 import { appError } from "../utils/appError"
 
-
-///toUnderstand
 declare global {
     namespace Express {
         interface Request {
