@@ -2,6 +2,8 @@ import { Router } from "express";
 import { rentalControllers } from "./rental.controller";
 import { auth } from "../../middlewares/auth";
 import { UserRoles } from "../../../generated/prisma/enums";
+import { reviewSchema } from "./rental.validation";
+import { validateRequest } from "../../middlewares/validateRequest";
 
 const router = Router()
 
@@ -18,6 +20,7 @@ router.post(`/:id`,
     rentalControllers.submitRentalRequest)
 
 router.post(`/review/:propertyId`,
+    validateRequest(reviewSchema),
     auth(UserRoles.TENANT),
     rentalControllers.submitReview)
 

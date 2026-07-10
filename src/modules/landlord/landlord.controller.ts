@@ -3,7 +3,6 @@ import { handleAsync } from "../../utils/handleAsync";
 import { landlordServices } from "./landlord.service";
 import { sendResponse } from "../../utils/sendResponse";
 import status from "http-status"
-import { CLIENT_RENEG_LIMIT } from "node:tls";
 import { RentalRequestStatus } from "../../../generated/prisma/enums";
 
 const getAllProperties = handleAsync(

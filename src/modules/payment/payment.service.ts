@@ -15,10 +15,10 @@ const createCheckoutSession = async (rentalRequestId: string, userId: string) =>
     }
 
     if (rentalRequest.requested_by !== userId) {
-        throw appError(`You did not make this rental request so you can not create checkout session for this.`, 400)
+        throw appError(`You did not make this rental request so you can not create checkout session for this.`, 403)
     }
     if (rentalRequest.status !== RentalRequestStatus.APPROVED) {
-        throw appError(`Cannot pay for this request as landlord didn't approve this request yet.`, 403)
+        throw appError(`Cannot pay for this request as landlord didn't approve this request yet.`, 400)
     }
 
     const session = await stripe.checkout.sessions.create({

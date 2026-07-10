@@ -37,9 +37,13 @@ const getRequestDetailsFromDB = async (userId: string, requestId: string, userRo
 }
 
 const submitRentalRequestInDb = async (propertyId: string, requestedBy: string) => {
-    const isPropertyInDb = await prisma.properties.findUniqueOrThrow({
+    const isPropertyInDb = await prisma.properties.findUnique({
         where: { id: propertyId }
     })
+
+    if (!isPropertyInDb) {
+        throw appError(`No such property found.`, 404)
+    }
 
     const result = await prisma.rental_Requests.create({
         data: {

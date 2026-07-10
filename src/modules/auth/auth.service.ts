@@ -2,16 +2,12 @@ import envConfig from "../../config/envConfig";
 import { prisma } from "../../lib/prisma";
 import { ILoginUser, IRegisterUser } from "./auth.interface";
 import bcrypt from "bcryptjs"
-import { UserRoles } from "../../../generated/prisma/enums";
 import { tokenUtils } from "../../utils/tokens";
 import { JwtPayload, SignOptions } from "jsonwebtoken";
 import { appError } from "../../utils/appError";
 
 const registerUserIntoDb = async (payload: IRegisterUser) => {
     const { name, email, password, role, profilePhoto } = payload;
-    if (role && !Object.values(UserRoles).includes(role)) {
-        throw appError(`Please enter a valid role`, 400);
-    }
 
     const isUserInDb = await prisma.user.findUnique({
         where: { email }
@@ -105,20 +101,24 @@ const refreshToken = async (refreshToken: string) => {
 
 const getCurrentUserFromDb = async (accessToken: string) => {
     if (!accessToken) {
-        throw appError(`Unable to fetch user from cookie. Please try logging in again.`, 400)
+        throw appError(`Unable to fetch user from cookie. Please try logging in again.`, 401)
     }
 
     const verifiedToken = tokenUtils.verifyToken(accessToken, envConfig.jwt_access_secret)
     if (!verifiedToken) {
-        throw appError(`Unable to verify token`, 400)
+        throw appError(`Unable to verify token`, 401)
     }
 
     const { id } = verifiedToken.data as JwtPayload
 
-    const result = await prisma.user.findFirstOrThrow({
+    const result = await prisma.user.findFirst({
         where: { id },
         omit: { password: true }
     })
+
+    if (!result) {
+        throw appError(`User not found`, 404)
+    }
     return result;
 }
 

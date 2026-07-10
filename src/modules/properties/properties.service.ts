@@ -7,9 +7,6 @@ const createNewListingInDb = async (payload: INewProperty, userId: string) => {
     const { category_name, location, price } = payload;
     const normalizedCategory = category_name.trim().toLocaleLowerCase()
 
-    if (!category_name || !location || price === undefined) {
-        throw appError(`Please enter all required fields: Location, Price, Category Name`, 400)
-    }
     const categoryRecord = await prisma.categories.upsert({
         where: { name: normalizedCategory },
         update: {},
@@ -27,7 +24,6 @@ const createNewListingInDb = async (payload: INewProperty, userId: string) => {
 
     return result;
 
-    ///add input validation
 }
 
 const updateListingInDb = async (id: any, payload: IUpdateProperty, userId: string) => {
@@ -35,12 +31,12 @@ const updateListingInDb = async (id: any, payload: IUpdateProperty, userId: stri
         where: { id }
     })
     if (!propertyInDb) {
-        throw appError(`No post found for id : ${id}`,404)
+        throw appError(`No post found for id : ${id}`, 404)
     }
 
     const isCreator = propertyInDb.landlord_id === userId
     if (!isCreator) {
-        throw appError(`Unauthorized action.`,403)
+        throw appError(`Unauthorized action.`, 403)
     }
 
     const { category_name, ...restPayload } = payload;

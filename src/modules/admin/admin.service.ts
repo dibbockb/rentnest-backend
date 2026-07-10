@@ -38,13 +38,6 @@ const moderateUserInDb = async (id: string, payload: IModerateUser) => {
     }
 
     const updatePayload: Prisma.UserUpdateInput = { ...payload }
-    if (payload.role) {
-        const cleanedRole = payload.role.trim().toUpperCase()
-        if (!Object.values(UserRoles).includes(cleanedRole as UserRoles)) {
-            throw appError(`Please enter a valid role: ADMIN, LANDLORD, TENANT`, 400);
-        }
-        updatePayload.role = cleanedRole as UserRoles
-    }
 
     const result = await prisma.user.update({
         where: { id: userInDb.id },
