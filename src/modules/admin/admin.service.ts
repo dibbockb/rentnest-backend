@@ -1,6 +1,7 @@
 import { Prisma } from "../../../generated/prisma/browser";
 import { UserRoles } from "../../../generated/prisma/enums";
 import { prisma } from "../../lib/prisma"
+import { appError } from "../../utils/appError";
 import { IModerateUser } from "./admin.interface";
 
 const getAllUsersFromDb = async () => {
@@ -33,14 +34,14 @@ const moderateUserInDb = async (id: string, payload: IModerateUser) => {
         where: { id }
     })
     if (!userInDb) {
-        throw new Error(`No such user found.`)
+        throw appError(`No such user found.`, 404)
     }
 
     const updatePayload: Prisma.UserUpdateInput = { ...payload }
     if (payload.role) {
         const cleanedRole = payload.role.trim().toUpperCase()
         if (!Object.values(UserRoles).includes(cleanedRole as UserRoles)) {
-            throw new Error(`Please enter a valid role: ADMIN, LANDLORD, TENANT`);
+            throw appError(`Please enter a valid role: ADMIN, LANDLORD, TENANT`, 400);
         }
         updatePayload.role = cleanedRole as UserRoles
     }

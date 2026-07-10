@@ -1,6 +1,7 @@
 import { JwtPayload } from "jsonwebtoken";
 import { prisma } from "../../lib/prisma";
 import { RentalRequestStatus, UserRoles } from "../../../generated/prisma/enums";
+import { appError } from "../../utils/appError";
 
 const getAllPropertiesFromDb = async (userId: string) => {
     const result = await prisma.properties.findMany({
@@ -35,11 +36,11 @@ const manageRequestInDb = async (requestId: string, userId: string, statusAction
     })
 
     if (!rentalRequest) {
-        throw new Error(`Rental request not found.`)
+        throw appError(`Rental request not found.`, 404)
     }
 
     if (rentalRequest.property.landlord_id !== userId) {
-        throw new Error(`Unauthorized.`)
+        throw appError(`Unauthorized.`, 403)
     }
 
     const result = await prisma.rental_Requests.update({
@@ -54,7 +55,7 @@ const deleteListingFromDb = async (id: string, userId: string, userRole: string)
         where: { id }
     })
     if (!propertyInDb) {
-        throw new Error(`No such property found.`)
+        throw appError(`No such property found.`, 404)
     }
 
     const isCreator = propertyInDb.landlord_id === userId
@@ -62,7 +63,7 @@ const deleteListingFromDb = async (id: string, userId: string, userRole: string)
     const hasPermission = isCreator || isAdmin
 
     if (!hasPermission) {
-        throw new Error(`You don't have permission.`)
+        throw appError(`You don't have permission.`, 403)
     }
 
     const result = await prisma.properties.delete({

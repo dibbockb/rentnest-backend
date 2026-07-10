@@ -1,5 +1,6 @@
 import { RentalRequestStatus, UserRoles } from "../../../generated/prisma/enums";
 import { prisma } from "../../lib/prisma"
+import { appError } from "../../utils/appError";
 import { IReview } from "./rental.interface";
 
 const getMyRequestsFromDb = async (userId: string) => {
@@ -26,10 +27,10 @@ const getRequestDetailsFromDB = async (userId: string, requestId: string, userRo
     })
 
     if (!result) {
-        throw new Error(`Rental request not found.`);
+        throw appError(`Rental request not found.`, 404);
     }
     if (userRole !== UserRoles.ADMIN && result.requested_by !== userId) {
-        throw new Error(`You do not have permission to view this request.`);
+        throw appError(`You do not have permission to view this request.`, 403);
     }
 
     return result;
@@ -55,7 +56,7 @@ const submitReviewInDb = async (payload: IReview, propertyId: string, userId: st
         where: { id: propertyId },
     })
     if (!propertyInDb) {
-        throw new Error(`No such property found.`)
+        throw appError(`No such property found.`, 404)
     }
 
     const isValidTenant = await prisma.rental_Requests.findFirst({
@@ -66,7 +67,7 @@ const submitReviewInDb = async (payload: IReview, propertyId: string, userId: st
         }
     })
     if (!isValidTenant) {
-        throw new Error(`Access denied.`)
+        throw appError(`Access denied.`, 403)
     }
 
     const existingReview = await prisma.reviews.findFirst({
@@ -76,7 +77,7 @@ const submitReviewInDb = async (payload: IReview, propertyId: string, userId: st
         }
     });
     if (existingReview) {
-        throw new Error('You have already submitted a review for this property.');
+        throw appError('You have already submitted a review for this property.', 409);
     }
 
     const result = await prisma.reviews.create({

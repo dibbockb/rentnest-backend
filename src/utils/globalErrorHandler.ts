@@ -8,6 +8,6 @@ export const globalErrorHandler = (err: any, req: Request, res: Response, next: 
         success: false,
         statusCode: statusCode,
         message: (err as Error).message || "Something went wrong.",
-        error: err.stack
+        errorDetails: err.message
     })
 }

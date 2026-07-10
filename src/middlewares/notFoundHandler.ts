@@ -3,6 +3,7 @@ import status from "http-status"
 
 export const notFoundHandler = (req: Request, res: Response) => {
     res.status(status.NOT_FOUND).json({
+        success: false,
         message: `Route not found!`,
         path: req.originalUrl,
         date: Date()

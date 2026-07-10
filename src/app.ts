@@ -29,6 +29,7 @@ app.use(`/api/landlord`, landlordRoutes)
 app.use(`/api/rental`, rentalRoutes)
 app.use(`/api/payments`, paymentRoutes)
 
-app.use(globalErrorHandler)
 app.use(notFoundHandler)
+app.use(globalErrorHandler)
+
 export default app;

@@ -5,6 +5,7 @@ import { tokenUtils } from "../utils/tokens"
 import envConfig from "../config/envConfig"
 import { JwtPayload } from "jsonwebtoken"
 import { prisma } from "../lib/prisma"
+import { appError } from "../utils/appError"
 
 
 ///toUnderstand
@@ -26,18 +27,18 @@ export const auth = (...requiredRoles: UserRoles[]) => {
         async (req: Request, res: Response, next: NextFunction) => {
             const token = req.cookies.accessToken
             if (!token) {
-                throw new Error(`Unable to fetch cookies. Please try loggin in again.`)
+                throw appError(`Unable to fetch cookies. Please try loggin in again.`, 401)
             }
 
             const verifiedToken = tokenUtils.verifyToken(token, envConfig.jwt_access_secret)
             if (!verifiedToken) {
-                throw new Error(`Unable to verify token`)
+                throw appError(`Unable to verify token`, 401)
             }
 
             const { email, name, id, role } = verifiedToken.data as JwtPayload
 
             if (!requiredRoles.includes(role)) {
-                throw new Error(`Forbidden.`)
+                throw appError(`Forbidden.`, 403)
             }
 
             const user = await prisma.user.findUnique({
@@ -47,11 +48,11 @@ export const auth = (...requiredRoles: UserRoles[]) => {
             })
 
             if (!user) {
-                throw new Error(`User not found.`)
+                throw appError(`User not found.`, 404)
             }
 
             if (user.is_banned) {
-                throw new Error(`You have been banned from RentNest. Please contact support if you think this is a mistake.`)
+                throw appError(`You have been banned from RentNest. Please contact support if you think this is a mistake.`, 403)
             }
 
             req.user = {

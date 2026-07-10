@@ -3,6 +3,7 @@ import { PaymentStatus, RentalRequestStatus } from "../../../generated/prisma/en
 import envConfig from "../../config/envConfig"
 import { prisma } from "../../lib/prisma"
 import { stripe } from "../../lib/stripe"
+import { appError } from "../../utils/appError"
 
 const createCheckoutSession = async (rentalRequestId: string, userId: string) => {
     const rentalRequest = await prisma.rental_Requests.findUnique({
@@ -10,14 +11,14 @@ const createCheckoutSession = async (rentalRequestId: string, userId: string) =>
         include: { property: true }
     })
     if (!rentalRequest) {
-        throw new Error(`Rental request not found.`)
+        throw appError(`Rental request not found.`, 404)
     }
 
     if (rentalRequest.requested_by !== userId) {
-        throw new Error(`You did not make this rental request so you can not create checkout session for this.`)
+        throw appError(`You did not make this rental request so you can not create checkout session for this.`, 400)
     }
     if (rentalRequest.status !== RentalRequestStatus.APPROVED) {
-        throw new Error(`Cannot pay for this request as landlord didn't approve this request yet.`)
+        throw appError(`Cannot pay for this request as landlord didn't approve this request yet.`, 403)
     }
 
     const session = await stripe.checkout.sessions.create({
@@ -65,7 +66,7 @@ const handleWebhook = async (payload: Buffer, signature: string) => {
             const totalAmount = session.amount_total ?? 0;
 
             if (!rentalRequestId || !propertyId || !userId) {
-                throw new Error(`Missing essential metadata in stripe webhook response.`)
+                throw appError(`Missing essential metadata in stripe webhook response.`, 400)
             }
 
             await prisma.$transaction([
