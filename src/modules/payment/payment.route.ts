@@ -11,4 +11,12 @@ router.post(`/create/:rentalRequestId`,
 
 router.post(`/webhook`, paymentControllers.handleWebhook)
 
+router.get(`/`,
+    auth(UserRoles.TENANT, UserRoles.ADMIN),
+    paymentControllers.getMyPaymentHistory)
+
+router.get(`/:id`,
+    auth(UserRoles.TENANT, UserRoles.ADMIN),
+    paymentControllers.getPaymentDetails)
+
 export const paymentRoutes: Router = router

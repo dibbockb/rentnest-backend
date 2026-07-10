@@ -5,7 +5,7 @@ export const registerSchema = z.object({
     name: z.string().min(1, "Name is required"),
     email: z.string().email("Invalid Email"),
     password: z.string(),
-    role: z.enum(UserRoles).optional(),
+    role: z.enum(["TENANT", "LANDLORD"]).optional(),
     profilePhoto: z.string().url("Invalid Photo Url").optional(),
 })
 

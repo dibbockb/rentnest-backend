@@ -105,7 +105,65 @@ const handleWebhook = async (payload: Buffer, signature: string) => {
 
 }
 
+const getMyPaymentHistoryFromDB = async (userId: string) => {
+    const result = await prisma.payments.findMany({
+        where: {
+            rental_request: {
+                requested_by: userId
+            }
+        },
+        include: {
+            rental_request: {
+                include: {
+                    property: {
+                        select: {
+                            location: true,
+                            price: true
+                        }
+                    }
+                }
+            }
+        },
+        orderBy: {
+            paid_at: 'desc'
+        }
+    })
+
+    return result;
+}
+
+const getPaymentDetailsFromDb = async (userId: string, txId: string) => {
+    const result = await prisma.payments.findFirst({
+        where: {
+            transaction_id: txId,
+            rental_request: {
+                requested_by: userId
+            }
+        },
+        include: {
+            rental_request: {
+                include: {
+                    property: {
+                        select: {
+                            location: true,
+                            price: true
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    if (!result) {
+        throw appError("Payment record not found or access denied.", 404);
+    }
+
+    return result;
+};
+
 export const paymentServices = {
     createCheckoutSession,
-    handleWebhook
+    handleWebhook,
+    getMyPaymentHistoryFromDB,
+    getPaymentDetailsFromDb
 }

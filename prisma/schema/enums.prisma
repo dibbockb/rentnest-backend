@@ -17,12 +17,3 @@ enum PaymentStatus {
   COMPLETED
   FAILED
 }
-
-// enum CategoriesList {
-//     House
-//     Apartment
-//     Studio
-//     Duplex
-//     Tinyhouse
-//     Penthouse
-// }
