@@ -1,8 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import status from "http-status"
 import { ZodError } from "zod";
+import { logger } from "./logger";
 
 export const globalErrorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
+    logger.error(err.message, { statusCode: err.statusCode, stack: err.stack });
+
     if (err instanceof ZodError) {
         return res.status(status.BAD_REQUEST).json({
             success: false,
