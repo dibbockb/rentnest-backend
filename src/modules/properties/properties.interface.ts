@@ -2,6 +2,7 @@ export interface INewProperty {
     location: string,
     price: number,
     category_name: string,
+    images?: string[],
 }
 
 export interface IUpdateProperty {

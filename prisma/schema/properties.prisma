@@ -3,6 +3,7 @@ model Properties {
   is_available Boolean  @default(true)
   location     String
   price        Int      @default(0)
+  images       String[] @default([])
   landlord_id  String
   category_id  String
   created_at   DateTime @default(now())

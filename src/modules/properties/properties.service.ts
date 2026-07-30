@@ -4,7 +4,7 @@ import { appError } from "../../utils/appError";
 import { INewProperty, IPropertyFilters, IUpdateProperty } from "./properties.interface";
 
 const createNewListingInDb = async (payload: INewProperty, userId: string) => {
-    const { category_name, location, price } = payload;
+    const { category_name, location, price, images } = payload;
     const normalizedCategory = category_name.trim().toLocaleLowerCase()
 
     const categoryRecord = await prisma.categories.upsert({
@@ -17,6 +17,7 @@ const createNewListingInDb = async (payload: INewProperty, userId: string) => {
         data: {
             location,
             price: Number(price),
+            images: images ?? [],
             landlord_id: userId,
             category_id: categoryRecord.id
         }
@@ -26,7 +27,7 @@ const createNewListingInDb = async (payload: INewProperty, userId: string) => {
 
 }
 
-const updateListingInDb = async (id: any, payload: IUpdateProperty, userId: string) => {
+const updateListingInDb = async (id: string, payload: IUpdateProperty, userId: string) => {
     const propertyInDb = await prisma.properties.findUnique({
         where: { id }
     })

@@ -29,7 +29,7 @@ export const auth = (...requiredRoles: UserRoles[]) => {
             }
 
             const verifiedToken = tokenUtils.verifyToken(token, envConfig.jwt_access_secret)
-            if (!verifiedToken) {
+            if (!verifiedToken.success || !verifiedToken.data) {
                 throw appError(`Unable to verify token`, 401)
             }
 
@@ -41,7 +41,7 @@ export const auth = (...requiredRoles: UserRoles[]) => {
 
             const user = await prisma.user.findUnique({
                 where: {
-                    id, email, name, role
+                    id
                 }
             })
 

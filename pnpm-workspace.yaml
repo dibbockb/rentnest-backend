@@ -1,5 +1,6 @@
 allowBuilds:
-  prisma: set this to true or false
+  '@prisma/engines': false
+  prisma: false
 minimumReleaseAgeExclude:
   - '@typescript/typescript-aix-ppc64@7.0.2'
   - '@typescript/typescript-darwin-arm64@7.0.2'

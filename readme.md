@@ -2,7 +2,7 @@
 
 An Airbnb-like multi-tenant rental marketplace engine built with Express, Prisma, and PostgreSQL, featuring secure distributed Stripe financial automation.
 
-**Live URL:** https://rentnest.dibbockb.com/
+**Live URL:** https://api.rentnest.dibbockb.com
 
 ## Tech Stack
 - **Engine:** Node.js / Express (TypeScript)
