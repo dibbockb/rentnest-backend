@@ -6,6 +6,7 @@ import envConfig from "../config/envConfig"
 import { JwtPayload } from "jsonwebtoken"
 import { prisma } from "../lib/prisma"
 import { appError } from "../utils/appError"
+import { extractToken } from "../utils/extractToken"
 
 declare global {
     namespace Express {
@@ -23,7 +24,7 @@ declare global {
 export const auth = (...requiredRoles: UserRoles[]) => {
     return handleAsync(
         async (req: Request, res: Response, next: NextFunction) => {
-            const token = req.cookies.accessToken
+            const token = extractToken(req)
             if (!token) {
                 throw appError(`Unable to fetch cookies. Please try loggin in again.`, 401)
             }

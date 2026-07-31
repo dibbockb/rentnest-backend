@@ -39,7 +39,6 @@ const submitRentalRequest = handleAsync(
     async (req: Request, res: Response, next: NextFunction) => {
         const propertyId = req.params.id;
         const requestedBy = req.user?.id;
-
         const result = await rentalServices.submitRentalRequestInDb(propertyId as string, requestedBy as string)
         sendResponse(res, {
             success: true,

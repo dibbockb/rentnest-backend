@@ -103,9 +103,19 @@ const getAllPropertiesFromDb = async (filters: IPropertyFilters) => {
 const getPropertyDetailsFromDb = async (id: string) => {
     const result = await prisma.properties.findUnique({
         where: { id },
-        include: { category: true },
-        omit: { category_id: true }
-    })
+        omit: {
+            category_id: true,
+            landlord_id: true,
+        },
+        include: {
+            category: true,
+            landlord: {
+                omit: {
+                    password: true,
+                },
+            },
+        },
+    });
     return result
 }
 

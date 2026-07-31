@@ -24,8 +24,10 @@ const createCheckoutSession = async (rentalRequestId: string, userId: string) =>
     const session = await stripe.checkout.sessions.create({
         mode: "payment",
         payment_method_types: ["card"],
-        success_url: `${envConfig.frontend_url}/session/checkout?success=true&session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${envConfig.frontend_url}/session/checkout?status=cancelled`,
+        // http://localhost:3000/dashboard/payment-success
+        success_url: `${envConfig.frontend_url}/dashboard/payment-success`,
+        // http://localhost:3000/dashboard/requests
+        cancel_url: `${envConfig.frontend_url}/dashboard/requests`,
         metadata: {
             rental_request_id: rentalRequest.id,
             property_id: rentalRequest.property.id,

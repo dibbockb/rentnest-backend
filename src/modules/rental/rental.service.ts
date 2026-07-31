@@ -6,7 +6,7 @@ import { IReview } from "./rental.interface";
 const getMyRequestsFromDb = async (userId: string) => {
     const result = await prisma.rental_Requests.findMany({
         where: { requested_by: userId },
-        include: { property: true },
+        include: { property: true,  },
     })
 
     return result;

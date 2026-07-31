@@ -30,7 +30,7 @@ const getAllRequests = handleAsync(
             success: true,
             statusCode: status.OK,
             message: `Fetched all properties and rental requests`,
-            data: { result, totalCount }
+            data: { result }
         })
     })
 

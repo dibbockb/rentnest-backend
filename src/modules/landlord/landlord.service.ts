@@ -1,4 +1,3 @@
-import { JwtPayload } from "jsonwebtoken";
 import { prisma } from "../../lib/prisma";
 import { RentalRequestStatus, UserRoles } from "../../../generated/prisma/enums";
 import { appError } from "../../utils/appError";
