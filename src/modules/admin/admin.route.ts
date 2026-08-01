@@ -24,4 +24,8 @@ router.patch(`/users/:id`,
     auth(UserRoles.ADMIN),
     adminControllers.moderateUser)
 
+router.delete(`/users/:id`,
+    auth(UserRoles.ADMIN),
+    adminControllers.deleteUser)
+
 export const adminRoutes: Router = router;

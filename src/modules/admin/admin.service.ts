@@ -48,10 +48,26 @@ const moderateUserInDb = async (id: string, payload: IModerateUser) => {
     return result;
 }
 
+const deleteUserInDb = async (id: string) => {
+    const userInDb = await prisma.user.findUnique({
+        where: { id }
+    })
+    if (!userInDb) {
+        throw appError(`No such user found.`, 404)
+    }
+
+    const result = await prisma.user.delete({
+        where: { id: userInDb.id },
+    })
+
+    return result;
+}
+
 
 export const adminServices = {
     getAllUsersFromDb,
     getAllPropertiesFromDb,
     getAllRentalRequestsFromDb,
-    moderateUserInDb
+    moderateUserInDb,
+    deleteUserInDb
 }

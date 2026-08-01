@@ -55,9 +55,23 @@ const moderateUser =
         })
     })
 
+const deleteUser =
+    handleAsync(async (req: Request, res: Response, next: NextFunction) => {
+        const id = req.params.id
+        const result = await adminServices.deleteUserInDb(id as string)
+
+        sendResponse(res, {
+            success: true,
+            statusCode: status.OK,
+            message: `Updated user info.`,
+            data: result
+        })
+    })
+
 export const adminControllers = {
     getAllUsers,
     getAllProperties,
     getAllRentalRequests,
-    moderateUser
+    moderateUser,
+    deleteUser
 }
