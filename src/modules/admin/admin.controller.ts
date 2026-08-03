@@ -6,13 +6,16 @@ import status from "http-status"
 
 const getAllUsers =
     handleAsync(async (req: Request, res: Response) => {
-        const result = await adminServices.getAllUsersFromDb()
+        const page = parseInt(req.query.page as string) || 1
+        const limit = parseInt(req.query.limit as string) || 10
+
+        const result = await adminServices.getAllUsersFromDb(page, limit)
 
         sendResponse(res, {
             success: true,
             statusCode: status.OK,
             message: `Fetched all users from Database.`,
-            data: result
+            data: result,
         })
     })
 
@@ -55,6 +58,19 @@ const moderateUser =
         })
     })
 
+const deleteProperty =
+    handleAsync(async (req: Request, res: Response, next: NextFunction) => {
+        const id = req.params.id
+        const result = await adminServices.deletePropertyInDb(id as string)
+
+        sendResponse(res, {
+            success: true,
+            statusCode: status.OK,
+            message: `Deleted property.`,
+            data: result
+        })
+    })
+
 const deleteUser =
     handleAsync(async (req: Request, res: Response, next: NextFunction) => {
         const id = req.params.id
@@ -63,7 +79,7 @@ const deleteUser =
         sendResponse(res, {
             success: true,
             statusCode: status.OK,
-            message: `Updated user info.`,
+            message: `Deleted user.`,
             data: result
         })
     })
@@ -73,5 +89,6 @@ export const adminControllers = {
     getAllProperties,
     getAllRentalRequests,
     moderateUser,
+    deleteProperty,
     deleteUser
 }

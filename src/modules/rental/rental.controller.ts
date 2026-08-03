@@ -19,6 +19,20 @@ const getMyRequests = handleAsync(
     }
 )
 
+const getMyPayments = handleAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const userId = req.user?.id
+
+        const result = await rentalServices.getMyPaymentsFromDb(userId as string)
+        sendResponse(res, {
+            success: true,
+            statusCode: status.OK,
+            message: `Fetched All Payments for ${req.user?.id}`,
+            data: { result }
+        })
+    }
+)
+
 const getRequestDetails = handleAsync(
     async (req: Request, res: Response, next: NextFunction) => {
         const userId = req.user?.id;
@@ -67,6 +81,7 @@ const submitReview = handleAsync(
 
 export const rentalControllers = {
     submitRentalRequest,
+    getMyPayments,
     getMyRequests,
     getRequestDetails,
     submitReview

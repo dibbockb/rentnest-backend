@@ -24,6 +24,10 @@ router.patch(`/users/:id`,
     auth(UserRoles.ADMIN),
     adminControllers.moderateUser)
 
+router.delete(`/properties/:id`,
+    auth(UserRoles.ADMIN),
+    adminControllers.deleteProperty)
+
 router.delete(`/users/:id`,
     auth(UserRoles.ADMIN),
     adminControllers.deleteUser)

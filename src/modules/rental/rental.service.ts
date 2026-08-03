@@ -6,7 +6,16 @@ import { IReview } from "./rental.interface";
 const getMyRequestsFromDb = async (userId: string) => {
     const result = await prisma.rental_Requests.findMany({
         where: { requested_by: userId },
-        include: { property: true,  },
+        include: { property: true, },
+    })
+
+    return result;
+}
+
+const getMyPaymentsFromDb = async (userId: string) => {
+    const result = await prisma.payments.findMany({
+        where: { rental_request: { requested_by: userId, } },
+        include: { rental_request : true},
     })
 
     return result;
@@ -97,6 +106,7 @@ const submitReviewInDb = async (payload: IReview, propertyId: string, userId: st
 
 export const rentalServices = {
     submitRentalRequestInDb,
+    getMyPaymentsFromDb,
     getMyRequestsFromDb,
     getRequestDetailsFromDB,
     submitReviewInDb

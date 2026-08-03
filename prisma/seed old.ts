@@ -20,45 +20,26 @@ const CATEGORY_NAMES = [
     'office space',
 ]
 
-// LoremFlickr keyword per category — these are Flickr tags, so they need to
-// be terms people actually tag real estate photos with, not the raw category name
-// (e.g. "condo" alone barely returns anything, "office space" returns none).
-const CATEGORY_IMAGE_KEYWORDS: Record<string, string> = {
-    apartment: 'apartment,interior',
-    house: 'house,exterior',
-    studio: 'studio,apartment',
-    duplex: 'duplex,house',
-    condo: 'condo,building',
-    'office space': 'office,interior',
-}
-
-const GLOBAL_LOCATIONS = [
-    'Manhattan, New York',
-    'Kensington, London',
-    'Le Marais, Paris',
-    'Shibuya, Tokyo',
-    'Marina Bay, Singapore',
-    'Downtown Dubai',
-    'Mitte, Berlin',
-    'Eixample, Barcelona',
-    'De Pijp, Amsterdam',
-    'Gangnam, Seoul',
-    'Bondi, Sydney',
-    'Yaletown, Vancouver',
-    'Yorkville, Toronto',
-    'Trastevere, Rome',
-    'Södermalm, Stockholm',
-    'Brera, Milan',
-    'Bandra, Mumbai',
-    'Sukhumvit, Bangkok',
-    'Palermo, Buenos Aires',
-    'Sandton, Johannesburg',
+const BD_LOCATIONS = [
+    'Gulshan, Dhaka',
+    'Banani, Dhaka',
+    'Dhanmondi, Dhaka',
+    'Uttara, Dhaka',
+    'Mirpur, Dhaka',
+    'Bashundhara, Dhaka',
+    'Mohammadpur, Dhaka',
+    'Agrabad, Chattogram',
+    'Nasirabad, Chattogram',
+    'Zindabazar, Sylhet',
+    'Shahjalal Upashahar, Sylhet',
+    'Boalia, Rajshahi',
+    'Khulshi, Chattogram',
+    'Baridhara, Dhaka',
 ]
 
-function propertyImages(categoryName: string, count: number) {
-    const keywords = CATEGORY_IMAGE_KEYWORDS[categoryName] ?? 'apartment,interior'
-    return Array.from({ length: count }, () =>
-        faker.image.urlLoremFlickr({ category: keywords, width: 800, height: 600 })
+function propertyImages(seed: string, count: number) {
+    return Array.from({ length: count }, (_, i) =>
+        `https://picsum.photos/seed/${seed}-${i}/800/600`
     )
 }
 
@@ -123,12 +104,13 @@ async function main() {
         Array.from({ length: 24 }).map(async (_, i) => {
             const landlord = faker.helpers.arrayElement(landlords)
             const category = faker.helpers.arrayElement(categories)
+            const imgSeed = `${category.name}-${i}-${faker.number.int(9999)}`
 
             return prisma.properties.create({
                 data: {
-                    location: faker.helpers.arrayElement(GLOBAL_LOCATIONS),
+                    location: faker.helpers.arrayElement(BD_LOCATIONS),
                     price: faker.number.int({ min: 8000, max: 90000 }),
-                    images: propertyImages(category.name, faker.number.int({ min: 3, max: 5 })),
+                    images: propertyImages(imgSeed, faker.number.int({ min: 3, max: 5 })),
                     is_available: true,
                     landlord_id: landlord.id,
                     category_id: category.id,

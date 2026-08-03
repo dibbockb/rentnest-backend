@@ -4,11 +4,27 @@ import { prisma } from "../../lib/prisma"
 import { appError } from "../../utils/appError";
 import { IModerateUser } from "./admin.interface";
 
-const getAllUsersFromDb = async () => {
-    const result = await prisma.user.findMany({
-        omit: { password: true }
-    })
-    return result;
+const getAllUsersFromDb = async (page: number, limit: number) => {
+    const skip = (page - 1) * limit
+
+    const [users, total] = await Promise.all([
+        prisma.user.findMany({
+            skip,
+            take: limit,
+            orderBy: { created_at: "desc" },
+        }),
+        prisma.user.count(),
+    ])
+
+    return {
+        users,
+        meta: {
+            total,
+            page,
+            limit,
+            totalPages: Math.ceil(total / limit),
+        },
+    }
 }
 
 const getAllPropertiesFromDb = async () => {
@@ -48,6 +64,21 @@ const moderateUserInDb = async (id: string, payload: IModerateUser) => {
     return result;
 }
 
+const deletePropertyInDb = async (id: string) => {
+    const propertyInDb = await prisma.properties.findUnique({
+        where: { id }
+    })
+    if (!propertyInDb) {
+        throw appError(`No property found.`, 404)
+    }
+
+    const result = await prisma.properties.delete({
+        where: { id: propertyInDb.id },
+    })
+
+    return result;
+}
+
 const deleteUserInDb = async (id: string) => {
     const userInDb = await prisma.user.findUnique({
         where: { id }
@@ -69,5 +100,6 @@ export const adminServices = {
     getAllPropertiesFromDb,
     getAllRentalRequestsFromDb,
     moderateUserInDb,
+    deletePropertyInDb,
     deleteUserInDb
 }

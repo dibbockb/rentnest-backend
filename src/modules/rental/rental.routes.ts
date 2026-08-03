@@ -11,6 +11,10 @@ router.get(`/my-requests`,
     auth(UserRoles.ADMIN, UserRoles.TENANT),
     rentalControllers.getMyRequests)
 
+router.get(`/my-payments`,
+    auth(UserRoles.ADMIN, UserRoles.TENANT),
+    rentalControllers.getMyPayments)
+
 router.get(`/:id`,
     auth(UserRoles.ADMIN, UserRoles.TENANT),
     rentalControllers.getRequestDetails)
